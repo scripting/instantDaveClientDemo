@@ -31,7 +31,39 @@ function chatlogStart (callback) {
 			}
 		});
 	}
-function startConnection (s, callback) {
+function handleUpdate (jstruct) {
+	var flNewMessage = true;
+	for (var i = 0; i < chatlog.messages.length; i++) { //see if an existing message was updated
+		var item = chatlog.messages [i];
+		if (item.id == jstruct.id) {
+			for (var x in jstruct) { 
+				item [x] = jstruct [x];
+				}
+			flNewMessage = false;
+			break;
+			}
+		}
+	if (flNewMessage) {
+		chatlog.messages.push (jstruct);
+		}
+	}
+function handleSocketMessage (verb, jsontext) {
+	console.log ("handleSocketMessage: verb == " + verb);
+	switch (verb) {
+		case "update":
+			var jstruct = JSON.parse (jsontext);
+			$("#idLatestMessage").text (jsonStringify (jstruct));
+			handleUpdate (jstruct);
+			break;
+		case "rollover":
+			chatlogStart ();
+			break;
+		case "reload": 
+			window.location.href  = window.location.href; 
+			break;
+		}
+	}
+function startSocket (s, callback) {
 	mySocket = new WebSocket (config.urlWebsocketsServer); 
 	mySocket.onopen = function (evt) {
 		console.log ("mySocket is open.");
@@ -53,41 +85,9 @@ function startConnection (s, callback) {
 		console.log ("mySocket received an error");
 		};
 	}
-
-function handleMessage (verb, jsontext) {
-	console.log ("handleMessage: verb == " + verb);
-	switch (verb) {
-		case "update":
-			var jstruct = JSON.parse (jsontext), flNewMessage = true;
-			$("#idLatestMessage").text (jsonStringify (jstruct));
-			for (var i = 0; i < chatlog.messages.length; i++) { //see if an existing message was updated
-				var item = chatlog.messages [i];
-				if (item.id == jstruct.id) {
-					for (var x in jstruct) { 
-						item [x] = jstruct [x];
-						}
-					console.log ("handleMessage: updated message == " + jsonStringify (jstruct));
-					flNewMessage = false;
-					break;
-					}
-				}
-			if (flNewMessage) {
-				chatlog.messages.push (jstruct);
-				console.log ("handleMessage: new message == " + jsonStringify (jstruct));
-				}
-			break;
-		case "rollover":
-			chatlogStart ();
-			break;
-		case "reload": 
-			window.location.href  = window.location.href; 
-			break;
-		}
-	}
-
 function everySecond () {
 	if (mySocket === undefined) { //try to open the connection
-		startConnection ("watch chatlog", handleMessage);
+		startSocket ("watch chatlog", handleSocketMessage);
 		}
 	}
 function startup () {
