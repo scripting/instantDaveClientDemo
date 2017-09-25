@@ -99,3 +99,5 @@ function startup () {
 		setInterval (everySecond, 1000); 
 		});
 	}
+
+
