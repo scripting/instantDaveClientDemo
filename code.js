@@ -5,7 +5,7 @@ var config = {
 	urlWebsocketsServer: "ws://hub2.screen2.io:5365/"
 	}
 var mySocket = undefined;
-var chatlog = new Array ();
+var chatlog;
 
 function getChatlog (callback) {
 	$.ajax ({
