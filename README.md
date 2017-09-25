@@ -18,7 +18,7 @@ It's realtime. You get each item as it's posted, through the magic of webSockets
 
 ### The story of this demo app
 
-This app plugs into the same webSocket stream that Instant Dave does, giving you, the JavaScript programmer, the beginnings of an alternate user interface. Or a way to build a compatible <i>Instant</i> product, with your own sources. Instant Wisconsin or Instant Knicks for example. Instant Axios. Instant TPM.
+This app plugs into the same webSocket stream that Instant Dave does, giving you, the JavaScript programmer, the beginnings of an alternate user interface. Or a way to build a compatible <i>Instant</i> product, with your own sources. Instant ESPN or Instant Knicks for example. Instant TPM. Instant 538. Instant Podcast.
 
 It's time to explore realtime newsfeeds outside of Twitter and Facebook. This is a step in a bootstrap. And an offer to interop. In the most compelling form, example code that works. 
 
